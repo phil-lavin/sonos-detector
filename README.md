@@ -11,6 +11,8 @@ Compiling
 
 Running
 -------
+Must be run as root on linux as it creates an AF_PACKET socket
+
 ```
 ./sonos-detector eth1
 ```
