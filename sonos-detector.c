@@ -55,7 +55,7 @@ int main(int argc, char** argv) {
 	unsigned long my_ip, my_netmask, my_prefix, network_len, cur_ip;
 	int my_index;
 	struct sockaddr sa;
-	int sock, insock;
+	int sock;
 	u_char hwaddr[MAC_ADDR_LEN];
 	char *ifname, *ifsend, *cindex;
 	char ch;
@@ -84,14 +84,13 @@ args:	argc -= optind;
 
 	// Sockets
 	sock = NEWSOCKET();
-	insock = NEWSOCKET();
 	ioctl_sock = NEWSOCKET();
 
 	// Recv timeout
 	struct timeval tv;
 	tv.tv_sec = 0;
 	tv.tv_usec = 1;
-	setsockopt(insock, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv, sizeof(struct timeval));
+	setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv, sizeof(struct timeval));
 
 	if ((sock < 0) || (ioctl_sock < 0)) {
 		perror("Unable to create socket");
@@ -133,7 +132,7 @@ args:	argc -= optind;
 
 		send_arp(sock, my_index, cur_ip, my_ip, hwaddr);
 
-		detect_sonos(insock);
+		detect_sonos(sock);
 	}
 
 	exit(0);
